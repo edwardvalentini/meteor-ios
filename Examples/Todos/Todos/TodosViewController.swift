@@ -33,7 +33,11 @@ class TodosViewController: FetchedResultsTableViewController, UITextFieldDelegat
       
       if listID != nil {
         if listID != oldValue {
-          list = managedObjectContext!.existingObjectWithID(self.listID!, error: nil) as? List
+            do {
+                list = try managedObjectContext!.existingObjectWithID(self.listID!) as? List
+            } catch {
+                print("Error Obtaining Object from List Id \(error)")
+            }
         }
       } else {
         list = nil
@@ -175,7 +179,7 @@ class TodosViewController: FetchedResultsTableViewController, UITextFieldDelegat
     let text = addTaskTextField.text
     addTaskTextField.text = nil
     
-    if text.isEmpty {
+    if text!.isEmpty {
       addTaskTextField.resignFirstResponder()
       return false
     }

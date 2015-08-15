@@ -61,12 +61,12 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     let email = emailField.text
     let password = passwordField.text
     
-    if email.isEmpty || password.isEmpty {
+    if email!.isEmpty || password!.isEmpty {
       errorMessageLabel.text = "Email and password are required"
       return
     }
     
-    Meteor.loginWithEmail(email, password: password) { (error) -> Void in
+    Meteor.loginWithEmail(email!, password: password!) { (error) -> Void in
       if let error = error {
         self.errorMessageLabel.text = error.localizedFailureReason
       } else {

@@ -38,8 +38,8 @@ public class FetchedResultsTableViewDataSource: FetchedResultsDataSource, UITabl
     super.init(fetchedResultsController: fetchedResultsController)
   }
   
-  override func didFailWithError(error: NSError) {
-    delegate?.dataSource?(self, didFailWithError: error)
+  override func didFailWithError(error: ErrorType) {
+    delegate?.dataSource?(self, didFailWithError: error as NSError)
   }
   
   // MARK: - UITableViewDataSource
@@ -55,7 +55,7 @@ public class FetchedResultsTableViewDataSource: FetchedResultsDataSource, UITabl
   public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let object = objectAtIndexPath(indexPath)
     let reuseIdentifier = cellReuseIdentifierForObject(object, atIndexPath: indexPath)
-    let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
+    let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
     configureCell(cell, forObject: object, atIndexPath: indexPath)
     return cell
   }
@@ -119,10 +119,10 @@ public class FetchedResultsTableViewDataSource: FetchedResultsDataSource, UITabl
   // MARK: - Selection
   
   var selectedObject: NSManagedObject? {
-    if let selectedIndexPath = tableView.indexPathForSelectedRow() {
-      return objectAtIndexPath(selectedIndexPath)
-    } else {
-      return nil
-    }
+    let selectedIndexPath = tableView.indexPathForSelectedRow!
+    return objectAtIndexPath(selectedIndexPath)
+//    } else {
+//      return nil
+//    }
   }
 }

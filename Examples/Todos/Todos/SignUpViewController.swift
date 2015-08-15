@@ -69,7 +69,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     let password = passwordField.text
     let passwordConfirmation = passwordConfirmationField.text
     
-    if email.isEmpty || password.isEmpty || passwordConfirmation.isEmpty {
+    if email!.isEmpty || password!.isEmpty || passwordConfirmation!.isEmpty {
       errorMessageLabel.text = "Email, password and password confirmation are required"
       return
     } else if password != passwordConfirmation {
@@ -77,7 +77,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
       return
     }
     
-    Meteor.signUpWithEmail(email, password: password) { (error) -> Void in
+    Meteor.signUpWithEmail(email!, password: password!) { (error) -> Void in
       if let error = error {
         self.errorMessageLabel.text = error.localizedFailureReason
       } else {

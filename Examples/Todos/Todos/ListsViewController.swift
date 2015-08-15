@@ -84,7 +84,7 @@ class ListsViewController: FetchedResultsTableViewController {
     let addAction = UIAlertAction(title: "Add", style: .Default) { (action) in
       let nameTextField = alertController.textFields![0] as! UITextField
       let name = nameTextField.text
-      if name.isEmpty {
+      if name!.isEmpty {
         return
       }
       

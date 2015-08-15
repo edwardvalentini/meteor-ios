@@ -34,16 +34,19 @@ public class FetchedResultsDataSource: NSObject, NSFetchedResultsControllerDeleg
   }
   
   public func performFetch() {
-    var error: NSError?
-    if fetchedResultsController.performFetch(&error) {
-      reloadData()
-      fetchedResultsController.delegate = self
-    } else if error != nil {
-      didFailWithError(error!)
+    //var error: NSError?
+    
+    do {
+        try fetchedResultsController.performFetch()
+        reloadData()
+        fetchedResultsController.delegate = self
+    } catch {
+        didFailWithError(error)
     }
+    
   }
   
-  func didFailWithError(error: NSError) {
+  func didFailWithError(error: ErrorType) {
   }
   
   // MARK: - Accessing Results
@@ -53,8 +56,8 @@ public class FetchedResultsDataSource: NSObject, NSFetchedResultsControllerDeleg
   }
   
   public func numberOfItemsInSection(section: Int) -> Int {
-    let sectionInfo = fetchedResultsController.sections?[section] as! NSFetchedResultsSectionInfo
-    return sectionInfo.numberOfObjects ?? 0
+    let sectionInfo = fetchedResultsController.sections?[section]
+    return sectionInfo!.numberOfObjects ?? 0
   }
   
   public var objects: [NSManagedObject] {
@@ -71,7 +74,7 @@ public class FetchedResultsDataSource: NSObject, NSFetchedResultsControllerDeleg
   
   // MARK: - Observing Changes
 
-  enum ChangeDetail: Printable {
+  enum ChangeDetail: CustomStringConvertible {
     case SectionInserted(Int)
     case SectionDeleted(Int)
     case ObjectInserted(NSIndexPath)
@@ -146,9 +149,9 @@ public class FetchedResultsDataSource: NSObject, NSFetchedResultsControllerDeleg
 
   // MARK: - UIDataSourceModelAssociation
   
-  public func modelIdentifierForElementAtIndexPath(indexPath: NSIndexPath, inView view: UIView) -> String {
+  public func modelIdentifierForElementAtIndexPath(indexPath: NSIndexPath, inView view: UIView) -> String? {
     let object = objectAtIndexPath(indexPath)
-    return object.objectID.URIRepresentation().absoluteString!
+    return object.objectID.URIRepresentation().absoluteString
   }
   
   public func indexPathForElementWithModelIdentifier(identifier: String, inView view: UIView) -> NSIndexPath? {
