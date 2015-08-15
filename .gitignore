@@ -44,3 +44,9 @@ DerivedData
 
 # Carthage
 Carthage/Checkouts/
+
+.ruby-gemset
+.ruby-version
+Gemfile
+Gemfile.lock
+Pods/*
